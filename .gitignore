@@ -26,7 +26,3 @@ _ReSharper*/
 # NCrunch
 *.ncrunch*
 .*crunch*.local.xml
-
-Generated_Code #added for RIA/Silverlight projects
-
-/packages/
