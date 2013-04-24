@@ -94,7 +94,7 @@ namespace Nfield.Services.Implementation
         {
             ConnectionClient = connection;
             Client = ConnectionClient.Client;
-            InterviewersApi = new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/api/interviewers"); 
+            InterviewersApi = new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/interviewers"); 
         }
 
         #endregion

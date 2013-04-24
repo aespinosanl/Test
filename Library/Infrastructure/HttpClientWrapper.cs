@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Nfield.Infrastructure
@@ -46,6 +47,14 @@ namespace Nfield.Infrastructure
         public Task<HttpResponseMessage> PutAsJsonAsync<TContent>(string requestUri, TContent content)
         {
             return _httpClient.PutAsJsonAsync<TContent>(requestUri, content);
+        }
+
+        public HttpRequestHeaders DefaultRequestHeaders 
+        { 
+            get
+            {
+                return _httpClient.DefaultRequestHeaders;
+            }
         }
 
         #endregion

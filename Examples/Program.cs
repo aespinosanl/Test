@@ -20,7 +20,7 @@ namespace Nfield.SDK.Samples
             {
                 InitializeNfield(kernel);
 
-                const string serverUrl = "https://manager.nfieldmr.com/";
+                const string serverUrl = "http://localhost:82/v1";
 
                 // First step is to get an INfieldConnection which provides services used for data access and manipulation. 
                 INfieldConnection connection = NfieldConnectionFactory.Create(new Uri(serverUrl));

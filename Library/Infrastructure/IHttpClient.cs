@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Nfield.Infrastructure
@@ -12,5 +13,6 @@ namespace Nfield.Infrastructure
         Task<string> GetStringAsync(string requestUri);
         Task<HttpResponseMessage> PostAsJsonAsync<TContent>(string requestUri, TContent content);
         Task<HttpResponseMessage> PutAsJsonAsync<TContent>(string requestUri, TContent content);
+        HttpRequestHeaders DefaultRequestHeaders { get; }
     }
 }
