@@ -31,21 +31,21 @@ In this example we're using
                                     (bind, resolve) => kernel.Bind(bind).To(resolve).InSingletonScope(),
                                     (bind, resolve) => kernel.Bind(bind).ToConstant(resolve));
 </pre>
-<p>Create a connection</p>
+<p>Create a connection.</p>
 <pre>    INfieldConnection connection = NfieldConnectionFactory.Create(new Uri("https://manager.nfieldmr.com/"));</pre>
 <p>Sign in using your Nfield credentials.</p>
 <pre>    connection.SignInAsync("testdomain", "user1", "password123").Wait();</pre>
-<p>Get a service</p>
+<p>Get a service.</p>
 <pre>    INfieldInterviewersService interviewersService = connection.GetService<INfieldInterviewersService>();</pre>
-<p>Then you can perform any operations that you want to perform on the service, for example add an interviewer</p>
+<p>Then you can perform any operations that you want to perform on the service, for example add an interviewer.</p>
 <pre>    Interviewer interviewer = new Interviewer
             {
-                ClientInterviewerId = "ftropo5i",
-                FirstName = "Bill",
-                LastName = "Gates",
-                EmailAddress = "bill@hotmail.com",
-                TelephoneNumber = "0206598547",
-                UserName = "bill",
+                ClientInterviewerId = "sales",
+                FirstName = "Sales",
+                LastName = "Team",
+                EmailAddress = "sales@niposoftware.com",
+                TelephoneNumber = "+31 20 5225989",
+                UserName = "sales",
                 Password = "password12"
             };
     await _interviewersService.AddAsync(interviewer);
@@ -53,4 +53,4 @@ In this example we're using
 
 <h1>Feedback</h1>
 <p>For feedback related to this SDK please visit the
-<a href="http://www.nfieldmr.com/">Nfield website</a>.</p>
+<a href="http://www.nfieldmr.com/contact.aspx">Nfield website</a>.</p>
