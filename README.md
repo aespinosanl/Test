@@ -1,15 +1,6 @@
-<h1>NIPO Software Nfield SDK for Windows and .NET 4.0</h1>
+<h1>NIPO Software Nfield SDK for Windows</h1>
 <p>This SDK allows you to build applications that take advantage of the Nfield services.</p>
-
-<h1>Features</h1>
-<ul>
-    <li>Interviewers
-        <ul>
-            <li>Create/List/Update/Delete interviewers</li>
-        </ul>
-    </li>
-</ul>
-        
+    
 <h1>Requirements</h1>
 <ul>
     <li>.NET Framework 4.0 or later</li>
