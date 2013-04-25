@@ -20,7 +20,7 @@ namespace Nfield.Services
         /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>
-        Task AddAsync(Interviewer interviewer);
+        Task<Interviewer> AddAsync(Interviewer interviewer);
 
         /// <summary>
         /// Removes the interviewer.

@@ -34,19 +34,24 @@ namespace Nfield.SDK.Samples
                 NfieldInterviewersManagement interviewersManager = new NfieldInterviewersManagement(interviewersService);
 
                 // Perform synchronous and asynchronous operations on Interviewers.
-                Task t1 = interviewersManager.AddInterviewerAsync();
-                interviewersManager.AddInterviewer();
-                
-                Task t2 = interviewersManager.UpdateInterviewerAsync();
-                interviewersManager.UpdateInterviewer();
+                var t1 = interviewersManager.AddInterviewerAsync();
+                var interviewer2 = interviewersManager.AddInterviewer();
+                interviewer2.FirstName = "Harry";
+//                var t2 = interviewersManager.UpdateInterviewerAsync(interviewer2);
 
-                Task.WaitAll(t1, t2);
+                Task.WaitAll(t1);//, t2);
+
+                var interviewer1 = t1.Result;
+                interviewer1.EmailAddress = interviewer1.EmailAddress + "changed";
+                interviewer1.FirstName = "Bob";
+
+//                interviewersManager.UpdateInterviewer(interviewer1);
 
                 interviewersManager.QueryForInterviewers();
                 interviewersManager.QueryForInterviewersAsync();
                 
-                interviewersManager.RemoveInterviewerAsync().Wait();
-                interviewersManager.RemoveInterviewer(); 
+                interviewersManager.RemoveInterviewerAsync(interviewer1).Wait();
+                interviewersManager.RemoveInterviewer(interviewer2); 
             }
         }
 

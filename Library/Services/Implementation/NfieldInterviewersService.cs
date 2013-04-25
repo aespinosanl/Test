@@ -22,7 +22,7 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
         /// </summary>
-        public async Task AddAsync(Interviewer interviewer)
+        public async Task<Interviewer> AddAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
@@ -32,6 +32,12 @@ namespace Nfield.Services.Implementation
             var result = await Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer);
 
             ValidateStatusCode(result);
+
+            var addedInterviewer = JsonConvert.DeserializeObject<Interviewer>(
+                await result.Content.ReadAsStringAsync()
+                );
+
+            return addedInterviewer;
         }
 
         /// <summary>
@@ -44,15 +50,7 @@ namespace Nfield.Services.Implementation
                 throw new ArgumentNullException("interviewer");
             }
 
-            var content = new StringContent(JsonConvert.SerializeObject(new[] {interviewer.InterviewerId}));
-            content.Headers.Clear();
-            content.Headers.Add("Content-Type", "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Delete, InterviewersApi)
-            {
-                Content = content
-            };
-            
-            var result = await Client.SendAsync(request);
+            var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
 
             ValidateStatusCode(result);
         }

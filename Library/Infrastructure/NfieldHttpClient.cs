@@ -46,6 +46,11 @@ namespace Nfield.Infrastructure
             return SendRequest(_httpClient.PutAsJsonAsync<TContent>(requestUri, content));
         }
 
+        public Task<HttpResponseMessage> DeleteAsync(string requestUri)
+        {
+            return SendRequest(_httpClient.DeleteAsync(requestUri));
+        }
+
         #endregion
 
         #region IDisposable Members
