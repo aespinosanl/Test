@@ -13,5 +13,6 @@ namespace Nfield.Infrastructure
         Task<HttpResponseMessage> PostAsJsonAsync<TContent>(string requestUri, TContent content);
         Task<HttpResponseMessage> PutAsJsonAsync<TContent>(string requestUri, TContent content);
         Task<HttpResponseMessage> DeleteAsync(string requestUri);
+        Task<HttpResponseMessage> PatchAsJsonAsync<TContent>(string requestUri, TContent content);
     }
 }

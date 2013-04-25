@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace Nfield.Infrastructure
 {
@@ -49,6 +51,13 @@ namespace Nfield.Infrastructure
         public Task<HttpResponseMessage> DeleteAsync(string requestUri)
         {
             return SendRequest(_httpClient.DeleteAsync(requestUri));
+        }
+
+        public Task<HttpResponseMessage> PatchAsJsonAsync<TContent>(string requestUri, TContent content)
+        {
+            var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri);
+            request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
+            return SendRequest(_httpClient.SendAsync(request));
         }
 
         #endregion

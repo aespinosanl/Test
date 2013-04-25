@@ -33,11 +33,7 @@ namespace Nfield.Services.Implementation
 
             ValidateStatusCode(result);
 
-            var addedInterviewer = JsonConvert.DeserializeObject<Interviewer>(
-                await result.Content.ReadAsStringAsync()
-                );
-
-            return addedInterviewer;
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
         }
 
         /// <summary>
@@ -58,16 +54,25 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.UpdateAsync"/>
         /// </summary>
-        public async Task UpdateAsync(Interviewer interviewer)
+        public async Task<Interviewer> UpdateAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
 
-            var result = await Client.PutAsJsonAsync(InterviewersApi.AbsoluteUri + @"/all/edit", interviewer);
+            var updatedInterviewer = new UpdateInterviewer{
+                EmailAddress = interviewer.EmailAddress,
+                FirstName = interviewer.FirstName,
+                LastName = interviewer.LastName,
+                TelephoneNumber = interviewer.TelephoneNumber
+            };
+
+            var result = await Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer);
 
             ValidateStatusCode(result);
+
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
         }
 
         /// <summary>
@@ -123,5 +128,13 @@ namespace Nfield.Services.Implementation
             if(code >= 500 && code < 600)
                 throw new NfieldServerErrorException(result.ReasonPhrase);
         }
+    }
+
+    internal class UpdateInterviewer
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public string TelephoneNumber { get; set; }
     }
 }

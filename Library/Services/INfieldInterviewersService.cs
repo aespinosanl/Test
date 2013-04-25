@@ -44,7 +44,7 @@ namespace Nfield.Services
         /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>        
-        Task UpdateAsync(Interviewer interviewer);
+        Task<Interviewer> UpdateAsync(Interviewer interviewer);
 
         /// <summary>
         /// Gets interviewer queryable object.

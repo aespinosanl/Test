@@ -37,15 +37,15 @@ namespace Nfield.SDK.Samples
                 var t1 = interviewersManager.AddInterviewerAsync();
                 var interviewer2 = interviewersManager.AddInterviewer();
                 interviewer2.FirstName = "Harry";
-//                var t2 = interviewersManager.UpdateInterviewerAsync(interviewer2);
+                var t2 = interviewersManager.UpdateInterviewerAsync(interviewer2);
 
-                Task.WaitAll(t1);//, t2);
+                Task.WaitAll(t1, t2);
 
                 var interviewer1 = t1.Result;
                 interviewer1.EmailAddress = interviewer1.EmailAddress + "changed";
                 interviewer1.FirstName = "Bob";
 
-//                interviewersManager.UpdateInterviewer(interviewer1);
+                interviewersManager.UpdateInterviewer(interviewer1);
 
                 interviewersManager.QueryForInterviewers();
                 interviewersManager.QueryForInterviewersAsync();
