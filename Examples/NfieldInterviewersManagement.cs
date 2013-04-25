@@ -26,7 +26,7 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Adds and <see cref="Interviewer"/> to the system through an asynchronous operation.
         /// </summary>
-        public async Task AddInterviewerAsync()
+        public async Task<Interviewer> AddInterviewerAsync()
         {
             Interviewer interviewer = new Interviewer
             {
@@ -39,13 +39,14 @@ namespace Nfield.SDK.Samples
                 Password = "password12"
             };
 
-            await _interviewersService.AddAsync(interviewer);
+            var addedInterviewer = await _interviewersService.AddAsync(interviewer);
+            return addedInterviewer;
         }
 
         /// <summary>
         /// Adds and <see cref="Interviewer"/> to the system through a synchronous operation.
         /// </summary>
-        public void AddInterviewer()
+        public Interviewer AddInterviewer()
         {
             Interviewer interviewer = new Interviewer
             {
@@ -58,42 +59,31 @@ namespace Nfield.SDK.Samples
                 Password = "password12"
             };
 
-            _interviewersService.Add(interviewer);
+            return _interviewersService.Add(interviewer);
         }
 
         /// <summary>
         /// Updates an <see cref="Interviewer"/> through an asynchronous operation.
         /// </summary>
-        public async Task UpdateInterviewerAsync()
+        public async Task UpdateInterviewerAsync(Interviewer interviewer)
         {
-            IQueryable<Interviewer> interviewers = await _interviewersService.QueryAsync();
-
-            Interviewer interviewer = interviewers.FirstOrDefault();
-
             if(interviewer == null)
             {
                 return;
             }
-
-            interviewer.EmailAddress = interviewer.EmailAddress + "changed";
-            interviewer.FirstName = "Bob";
-
             await _interviewersService.UpdateAsync(interviewer);
         }
 
         /// <summary>
         /// Updates an <see cref="Interviewer"/> through a synchronous operation.
         /// </summary>
-        public void UpdateInterviewer()
+        public void UpdateInterviewer(Interviewer interviewer)
         {
-            Interviewer interviewer = _interviewersService.Query().FirstOrDefault();
-
             if (interviewer == null)
             {
                 return;
             }
 
-            interviewer.FirstName = "Harry";
 
             _interviewersService.Update(interviewer);
         }
@@ -101,13 +91,9 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Removes an existing <see cref="Interviewer"/> through an asynchronous operation.
         /// </summary>
-        public async Task RemoveInterviewerAsync()
+        public async Task RemoveInterviewerAsync(Interviewer interviewer)
         {
-            IQueryable<Interviewer> interviewers = await _interviewersService.QueryAsync();
-
-            Interviewer interviewer = interviewers.FirstOrDefault();
-
-            if(interviewer == null)
+            if (interviewer == null)
             {
                 return;
             }
@@ -118,10 +104,8 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Removes an existing <see cref="Interviewer"/> through a synchronous operation.
         /// </summary>
-        public void RemoveInterviewer()
+        public void RemoveInterviewer(Interviewer interviewer)
         {
-            Interviewer interviewer = _interviewersService.Query().FirstOrDefault();
-
             if (interviewer == null)
             {
                 return;

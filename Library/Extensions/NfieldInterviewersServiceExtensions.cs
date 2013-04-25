@@ -15,9 +15,9 @@ namespace Nfield.Extensions
         /// </summary>
         /// <param name="interviewersService">The <see cref="INfieldInterviewersService"/> to use</param>
         /// <param name="interviewer">interviewer to add</param>
-        public static void Add(this INfieldInterviewersService interviewersService, Interviewer interviewer)
+        public static Interviewer Add(this INfieldInterviewersService interviewersService, Interviewer interviewer)
         {
-            interviewersService.AddAsync(interviewer).Wait();
+            return interviewersService.AddAsync(interviewer).Result;
         }
 
         /// <summary>

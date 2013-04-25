@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Nfield.Infrastructure
 {
@@ -54,15 +56,14 @@ namespace Nfield.Infrastructure
             var data = new Dictionary<string, string>
                 {
                     {"Domain", domainName},
-                    {"Name", username},
+                    {"Username", username},
                     {"Password", password}
                 };
             var content = new FormUrlEncodedContent(data);
 
-            var result = await Client.PostAsync(NfieldServerUri + @"/api/SignIn", content);
+            var result = await Client.PostAsync(NfieldServerUri + @"/SignIn", content);
 
             return result.StatusCode == HttpStatusCode.OK;
-
         }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
         /// </summary>
-        public async Task AddAsync(Interviewer interviewer)
+        public async Task<Interviewer> AddAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
@@ -32,6 +32,8 @@ namespace Nfield.Services.Implementation
             var result = await Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer);
 
             ValidateStatusCode(result);
+
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
         }
 
         /// <summary>
@@ -44,15 +46,7 @@ namespace Nfield.Services.Implementation
                 throw new ArgumentNullException("interviewer");
             }
 
-            var content = new StringContent(JsonConvert.SerializeObject(new[] {interviewer.InterviewerId}));
-            content.Headers.Clear();
-            content.Headers.Add("Content-Type", "application/json");
-            var request = new HttpRequestMessage(HttpMethod.Delete, InterviewersApi)
-            {
-                Content = content
-            };
-            
-            var result = await Client.SendAsync(request);
+            var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
 
             ValidateStatusCode(result);
         }
@@ -60,16 +54,25 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.UpdateAsync"/>
         /// </summary>
-        public async Task UpdateAsync(Interviewer interviewer)
+        public async Task<Interviewer> UpdateAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
 
-            var result = await Client.PutAsJsonAsync(InterviewersApi.AbsoluteUri + @"/all/edit", interviewer);
+            var updatedInterviewer = new UpdateInterviewer{
+                EmailAddress = interviewer.EmailAddress,
+                FirstName = interviewer.FirstName,
+                LastName = interviewer.LastName,
+                TelephoneNumber = interviewer.TelephoneNumber
+            };
+
+            var result = await Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer);
 
             ValidateStatusCode(result);
+
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
         }
 
         /// <summary>
@@ -94,7 +97,7 @@ namespace Nfield.Services.Implementation
         {
             ConnectionClient = connection;
             Client = ConnectionClient.Client;
-            InterviewersApi = new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/api/interviewers"); 
+            InterviewersApi = new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/interviewers"); 
         }
 
         #endregion
@@ -125,5 +128,13 @@ namespace Nfield.Services.Implementation
             if(code >= 500 && code < 600)
                 throw new NfieldServerErrorException(result.ReasonPhrase);
         }
+    }
+
+    internal class UpdateInterviewer
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public string TelephoneNumber { get; set; }
     }
 }
