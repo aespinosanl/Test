@@ -7,14 +7,17 @@ using System.Threading.Tasks;
 using System.Web;
 using Moq;
 using Newtonsoft.Json;
+using Nfield.Services;
 using Xunit;
 
 namespace Nfield.Infrastructure
 {
     public class NfieldConnectionTests
     {
+        #region SignInAsync Tests
+
         [Fact]
-        public void TestSignIn_CredentialsAreIncorrect_ReturnsFalse()
+        public void TestSignInAsync_CredentialsAreIncorrect_ReturnsFalse()
         {
             var mockedHttpClient = new Mock<IHttpClient>();
             var mockedResolver = new Mock<IDependencyResolver>();
@@ -33,7 +36,7 @@ namespace Nfield.Infrastructure
         }
 
         [Fact]
-        public void TestSignIn_CredentialsAreCorrect_ReturnsTrue()
+        public void TestSignInAsync_CredentialsAreCorrect_ReturnsTrue()
         {
             Uri ServerUri = new Uri(@"http://localhost/");
 
@@ -66,6 +69,89 @@ namespace Nfield.Infrastructure
 
             Assert.True(result);
         }
+
+        #endregion
+        #region GetService Tests
+
+        [Fact]
+        public void TestGetService_RequestedServiceTypeIsNull_ThrowsArgumentNullException()
+        {
+            var target = new NfieldConnection();
+            Assert.Throws(typeof(ArgumentNullException), () => target.GetService(null));
+        }
+
+        [Fact]
+        public void TestGetService_ServiceDoesNotExist_ReturnsNull()
+        {
+            var mockedResolver = new Mock<IDependencyResolver>();
+            DependencyResolver.Register(mockedResolver.Object);
+            mockedResolver
+                .Setup(resolver => resolver.Resolve(typeof(INfieldConnectionClientObject)))
+                .Returns(null);
+
+            var target = new NfieldConnection();
+            var result = target.GetService<INfieldConnectionClientObject>();
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void TestGetService_ServiceExists_ReturnsService()
+        {
+            var stubbedNfieldConnectionClientObject = new Mock<INfieldConnectionClientObject>().Object;
+            var mockedResolver = new Mock<IDependencyResolver>();
+            DependencyResolver.Register(mockedResolver.Object);
+            mockedResolver
+                .Setup(resolver => resolver.Resolve(typeof(INfieldConnectionClientObject)))
+                .Returns(stubbedNfieldConnectionClientObject);
+
+            var target = new NfieldConnection();
+            var result = target.GetService<INfieldConnectionClientObject>();
+
+            Assert.Equal(result, stubbedNfieldConnectionClientObject);
+        }
+
+        [Fact]
+        public void TestGetService_ServiceExistsAndImplementsINfieldConnectionClientObject_CallsInitializeConnectionOnService()
+        {
+            var mockedNfieldConnectionClientObject = new Mock<INfieldConnectionClientObject>();
+            var mockedResolver = new Mock<IDependencyResolver>();
+            DependencyResolver.Register(mockedResolver.Object);
+            mockedResolver
+                .Setup(resolver => resolver.Resolve(typeof(INfieldConnectionClientObject)))
+                .Returns(mockedNfieldConnectionClientObject.Object);
+
+            var target = new NfieldConnection();
+            var result = target.GetService<INfieldConnectionClientObject>();
+
+            mockedNfieldConnectionClientObject.Verify(client => client.InitializeNfieldConnection(target));
+        }
+
+        #endregion
+
+        #region Dispose Tests
+
+        [Fact]
+        public void TestDispose_HasClient_CallsDisposeOnClient()
+        {
+            var mockedHttpClient = new Mock<IHttpClient>();
+            var mockedResolver = new Mock<IDependencyResolver>();
+            DependencyResolver.Register(mockedResolver.Object);
+            mockedResolver
+                .Setup(resolver => resolver.Resolve(typeof(IHttpClient)))
+                .Returns(mockedHttpClient.Object);
+            mockedHttpClient
+                .Setup(client => client.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
+                .Returns(CreateTask(HttpStatusCode.OK));
+
+            var target = new NfieldConnection();
+            var result = target.SignInAsync("", "", "").Result;
+            target.Dispose();
+
+            mockedHttpClient.Verify(client => client.Dispose());
+        }
+
+        #endregion
 
         private Task<HttpResponseMessage> CreateTask(HttpStatusCode httpStatusCode)
         {
