@@ -44,7 +44,6 @@ namespace Nfield.Services.Implementation
             }
 
             var result = await Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer);
-
             ValidateStatusCode(result);
 
             return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
@@ -61,7 +60,6 @@ namespace Nfield.Services.Implementation
             }
 
             var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
-
             ValidateStatusCode(result);
         }
 
@@ -83,7 +81,6 @@ namespace Nfield.Services.Implementation
             };
 
             var result = await Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer);
-
             ValidateStatusCode(result);
 
             return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
@@ -99,6 +96,22 @@ namespace Nfield.Services.Implementation
             
             string content = await result.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<Interviewer>>(content).AsQueryable();
+        }
+
+        /// <summary>
+        /// See <see cref="INfieldInterviewersService.ChangePasswordAsync"/>
+        /// </summary>
+        public async Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        {
+            if (interviewer == null)
+            {
+                throw new ArgumentNullException("interviewer");
+            }
+
+            var result = await Client.PutAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, password);
+            ValidateStatusCode(result);
+
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
         }
 
         #endregion

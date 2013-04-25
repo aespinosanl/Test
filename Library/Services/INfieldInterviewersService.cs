@@ -32,7 +32,6 @@ namespace Nfield.Services
         /// The aggregate exception can contain:
         /// <exception cref="Nfield.Exceptions.NfieldConflictException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
-        /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>
         Task<Interviewer> AddAsync(Interviewer interviewer);
 
@@ -42,7 +41,6 @@ namespace Nfield.Services
         /// <param name="interviewer">The interviewer to remove.</param>
         /// <exception cref="T:System.AggregateException"></exception>
         /// The aggregate exception can contain:
-        /// <exception cref="Nfield.Exceptions.NfieldConflictException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>        
@@ -51,13 +49,13 @@ namespace Nfield.Services
         /// <summary>
         /// Updates interviewers data.
         /// </summary>
-        /// <exception cref="T:System.AggregateException"></exception>
         /// <param name="interviewer">The interviewer to update.</param>
+        /// <exception cref="T:System.AggregateException"></exception> 
         /// The aggregate exception can contain:
         /// <exception cref="Nfield.Exceptions.NfieldConflictException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
-        /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>        
+        /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>
         Task<Interviewer> UpdateAsync(Interviewer interviewer);
 
         /// <summary>
@@ -65,10 +63,18 @@ namespace Nfield.Services
         /// <exception cref="T:System.AggregateException"></exception>
         /// </summary>
         /// The aggregate exception can contain:
-        /// <exception cref="Nfield.Exceptions.NfieldConflictException"></exception>
-        /// <exception cref="Nfield.Exceptions.NfieldBadRequestException"></exception>
-        /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
         /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>        
         Task<IQueryable<Interviewer>> QueryAsync();
+
+        /// <summary>
+        /// Change the password of an interviewer
+        /// </summary>
+        /// <param name="interviewer">interviewer whose password has to be changed</param>
+        /// <param name="password">the new password</param>
+        /// <exception cref="T:System.AggregateException"></exception>
+        /// The aggregate exception can contain:
+        /// <exception cref="Nfield.Exceptions.NfieldNotFoundException"></exception>
+        /// <exception cref="Nfield.Exceptions.NfieldServerErrorException"></exception>        
+        Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password);
     }
 }
