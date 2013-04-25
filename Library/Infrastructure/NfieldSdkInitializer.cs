@@ -23,7 +23,7 @@ namespace Nfield.Infrastructure
             // TODO register all types.
             registerTransient(typeof(NfieldConnection), typeof(NfieldConnection));
             registerTransient(typeof(INfieldInterviewersService), typeof(NfieldInterviewersService));
-            registerTransient(typeof(IHttpClient), typeof(HttpClientWrapper));
+            registerTransient(typeof(IHttpClient), typeof(NfieldHttpClient));
         }
 
     }

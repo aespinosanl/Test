@@ -63,17 +63,7 @@ namespace Nfield.Infrastructure
 
             var result = await Client.PostAsync(NfieldServerUri + @"/SignIn", content);
 
-
-            IEnumerable<string> headerValues;
-            if (result.StatusCode == HttpStatusCode.OK
-                && result.Headers.TryGetValues("X-AuthenticationToken", out headerValues))
-            {
-                var token = headerValues.First();
-                Client.DefaultRequestHeaders.Add("Authorization", new AuthenticationHeaderValue("Basic", token).ToString());
-                return true;
-            }
-
-            return false;
+            return result.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>
