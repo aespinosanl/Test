@@ -36,31 +36,34 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
         /// </summary>
-        public async Task<Interviewer> AddAsync(Interviewer interviewer)
+                public Task<Interviewer> AddAsync(Interviewer interviewer)
         {
-            if (interviewer == null)
+            if(interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
 
-            var result = await Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer);
-            ValidateStatusCode(result);
-
-            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
+            return Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer)
+                         .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
+                         .ContinueWith(task => task.Result.Content.ReadAsStringAsync().Result)
+                         .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result);
         }
 
         /// <summary>
         /// See <see cref="INfieldInterviewersService.RemoveAsync"/>
         /// </summary>
-        public async Task RemoveAsync(Interviewer interviewer)
+        public Task RemoveAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
 
-            var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
-            ValidateStatusCode(result);
+            return
+                Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId)
+                      .ContinueWith(responseTask => ValidateStatusCode(responseTask.Result));
+            //var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
+            //ValidateStatusCode(result);
         }
 
         /// <summary>
@@ -132,6 +135,15 @@ namespace Nfield.Services.Implementation
         INfieldHttpClient Client { get; set; }
 
         Uri InterviewersApi { get; set; }
+
+        private static Task<HttpResponseMessage> ValidateStatusCodeAsync(HttpResponseMessage result)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ValidateStatusCode(result);
+                return result;
+            });
+        }
 
         /// <summary>
         /// Helper method that checks the <paramref name="result"/> and throws the appropriate exceptions 
