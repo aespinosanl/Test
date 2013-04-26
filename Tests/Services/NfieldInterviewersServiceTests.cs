@@ -331,9 +331,9 @@ namespace Nfield.Services
             }
         }
                 
-        private Mock<IHttpClient> CreateHttpClientMock(HttpStatusCode httpStatusCode)
+        private Mock<INfieldHttpClient> CreateHttpClientMock(HttpStatusCode httpStatusCode)
         {
-            var mockedHttpClient = new Mock<IHttpClient>();
+            var mockedHttpClient = new Mock<INfieldHttpClient>();
 
             //setup the mocked HttpClient to return httpStatusCode for all methods that send a request to the server
 

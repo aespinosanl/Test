@@ -26,7 +26,7 @@ namespace Nfield.Infrastructure
 {
 
     [ExcludeFromCodeCoverage]
-    internal sealed class NfieldHttpClient : IHttpClient
+    internal sealed class NfieldHttpClient : INfieldHttpClient
     {
         private readonly HttpClient _httpClient;
 

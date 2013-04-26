@@ -33,11 +33,11 @@ namespace Nfield.Infrastructure
         [Fact]
         public void TestSignInAsync_CredentialsAreIncorrect_ReturnsFalse()
         {
-            var mockedHttpClient = new Mock<IHttpClient>();
+            var mockedHttpClient = new Mock<INfieldHttpClient>();
             var mockedResolver = new Mock<IDependencyResolver>();
             DependencyResolver.Register(mockedResolver.Object);
             mockedResolver
-                .Setup(resolver => resolver.Resolve(typeof(IHttpClient)))
+                .Setup(resolver => resolver.Resolve(typeof(INfieldHttpClient)))
                 .Returns(mockedHttpClient.Object);
             mockedHttpClient
                 .Setup(httpClient => httpClient.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))
@@ -58,11 +58,11 @@ namespace Nfield.Infrastructure
             const string Username = "UserName";
             const string Password = "Password";
 
-            var mockedHttpClient = new Mock<IHttpClient>();
+            var mockedHttpClient = new Mock<INfieldHttpClient>();
             var mockedResolver = new Mock<IDependencyResolver>();
             DependencyResolver.Register(mockedResolver.Object);
             mockedResolver
-                .Setup(resolver => resolver.Resolve(typeof(IHttpClient)))
+                .Setup(resolver => resolver.Resolve(typeof(INfieldHttpClient)))
                 .Returns(mockedHttpClient.Object);
             var content = new FormUrlEncodedContent(new Dictionary<string, string>
                 {
@@ -148,11 +148,11 @@ namespace Nfield.Infrastructure
         [Fact]
         public void TestDispose_HasClient_CallsDisposeOnClient()
         {
-            var mockedHttpClient = new Mock<IHttpClient>();
+            var mockedHttpClient = new Mock<INfieldHttpClient>();
             var mockedResolver = new Mock<IDependencyResolver>();
             DependencyResolver.Register(mockedResolver.Object);
             mockedResolver
-                .Setup(resolver => resolver.Resolve(typeof(IHttpClient)))
+                .Setup(resolver => resolver.Resolve(typeof(INfieldHttpClient)))
                 .Returns(mockedHttpClient.Object);
             mockedHttpClient
                 .Setup(client => client.PostAsync(It.IsAny<string>(), It.IsAny<HttpContent>()))

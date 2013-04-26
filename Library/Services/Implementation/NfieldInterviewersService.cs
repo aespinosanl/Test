@@ -129,7 +129,7 @@ namespace Nfield.Services.Implementation
 
         #endregion
 
-        IHttpClient Client { get; set; }
+        INfieldHttpClient Client { get; set; }
 
         Uri InterviewersApi { get; set; }
 
