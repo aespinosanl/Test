@@ -15,7 +15,6 @@
 using System;
 using Nfield.Infrastructure;
 using Nfield.Services.Implementation;
-using Nfield.Extensions;
 using Xunit;
 using Nfield.Models;
 using Moq;
@@ -25,8 +24,6 @@ using System.Net;
 using Nfield.Exceptions;
 using Newtonsoft.Json;
 using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Nfield.Services
 {
