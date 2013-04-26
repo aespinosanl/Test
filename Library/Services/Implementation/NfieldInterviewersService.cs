@@ -61,15 +61,13 @@ namespace Nfield.Services.Implementation
 
             return
                 Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId)
-                      .ContinueWith(responseTask => ValidateStatusCode(responseTask.Result));
-            //var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
-            //ValidateStatusCode(result);
+                      .ContinueWith(responseTask => ValidateStatusCodeAsync(responseTask.Result));
         }
 
         /// <summary>
         /// See <see cref="INfieldInterviewersService.UpdateAsync"/>
         /// </summary>
-        public async Task<Interviewer> UpdateAsync(Interviewer interviewer)
+        public Task<Interviewer> UpdateAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
@@ -83,38 +81,37 @@ namespace Nfield.Services.Implementation
                 TelephoneNumber = interviewer.TelephoneNumber
             };
 
-            var result = await Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer);
-            ValidateStatusCode(result);
-
-            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
+            return Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer)
+                         .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
+                         .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
+                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result);
         }
 
         /// <summary>
         /// See <see cref="INfieldInterviewersService.QueryAsync"/>
         /// </summary>
-        public async Task<IQueryable<Interviewer>> QueryAsync()
+        public Task<IQueryable<Interviewer>> QueryAsync()
         {
-            var result = await Client.GetAsync(InterviewersApi.AbsoluteUri);
-            ValidateStatusCode(result);
-            
-            string content = await result.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<Interviewer>>(content).AsQueryable();
+            return Client.GetAsync(InterviewersApi.AbsoluteUri)
+                        .ContinueWith(responoseMessageTask => ValidateStatusCodeAsync(responoseMessageTask.Result).Result)
+                        .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
+                        .ContinueWith(stringTask => JsonConvert.DeserializeObject<List<Interviewer>>(stringTask.Result).AsQueryable());   
         }
 
         /// <summary>
         /// See <see cref="INfieldInterviewersService.ChangePasswordAsync"/>
         /// </summary>
-        public async Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        public Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
         {
             if (interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
 
-            var result = await Client.PutAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, password);
-            ValidateStatusCode(result);
-
-            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
+            return Client.PutAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, password)
+                         .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
+                         .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
+                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result);
         }
 
         #endregion
@@ -136,37 +133,33 @@ namespace Nfield.Services.Implementation
 
         Uri InterviewersApi { get; set; }
 
-        private static Task<HttpResponseMessage> ValidateStatusCodeAsync(HttpResponseMessage result)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ValidateStatusCode(result);
-                return result;
-            });
-        }
-
         /// <summary>
         /// Helper method that checks the <paramref name="result"/> and throws the appropriate exceptions 
         /// based on the status code.
         /// </summary>
-        private static void ValidateStatusCode(HttpResponseMessage result)
+        private static Task<HttpResponseMessage> ValidateStatusCodeAsync(HttpResponseMessage result)
         {
-            switch(result.StatusCode)
+            return Task.Factory.StartNew(() =>
             {
-                case HttpStatusCode.Conflict:
-                    throw new NfieldConflictException(result.ReasonPhrase);
+                switch (result.StatusCode)
+                {
+                    case HttpStatusCode.Conflict:
+                        throw new NfieldConflictException(result.ReasonPhrase);
 
-                case HttpStatusCode.BadRequest:
-                    throw new NfieldBadRequestException(result.ReasonPhrase);
+                    case HttpStatusCode.BadRequest:
+                        throw new NfieldBadRequestException(result.ReasonPhrase);
 
-                case HttpStatusCode.NotFound:
-                    throw new NfieldNotFoundException(result.ReasonPhrase);
-            }
+                    case HttpStatusCode.NotFound:
+                        throw new NfieldNotFoundException(result.ReasonPhrase);
+                }
 
-            int code = (int) result.StatusCode;
-            if(code >= 500 && code < 600)
-                throw new NfieldServerErrorException(result.ReasonPhrase);
-        }
+                int code = (int)result.StatusCode;
+                if (code >= 500 && code < 600)
+                    throw new NfieldServerErrorException(result.ReasonPhrase);
+
+                return result;
+            });
+        }        
     }
 
     internal class UpdateInterviewer

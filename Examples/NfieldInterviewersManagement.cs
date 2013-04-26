@@ -40,7 +40,7 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Adds and <see cref="Interviewer"/> to the system through an asynchronous operation.
         /// </summary>
-        public async Task<Interviewer> AddInterviewerAsync()
+        public Task<Interviewer> AddInterviewerAsync()
         {
             Interviewer interviewer = new Interviewer
             {
@@ -53,8 +53,7 @@ namespace Nfield.SDK.Samples
                 Password = "password12"
             };
 
-            var addedInterviewer = await _interviewersService.AddAsync(interviewer);
-            return addedInterviewer;
+            return _interviewersService.AddAsync(interviewer);
         }
 
         /// <summary>
@@ -79,13 +78,13 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Updates an <see cref="Interviewer"/> through an asynchronous operation.
         /// </summary>
-        public async Task<Interviewer> UpdateInterviewerAsync(Interviewer interviewer)
+        public Task<Interviewer> UpdateInterviewerAsync(Interviewer interviewer)
         {
             if(interviewer == null)
             {
                 return null;
             }
-            return await _interviewersService.UpdateAsync(interviewer);
+            return _interviewersService.UpdateAsync(interviewer);
         }
 
         /// <summary>
@@ -104,14 +103,14 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Removes an existing <see cref="Interviewer"/> through an asynchronous operation.
         /// </summary>
-        public async Task RemoveInterviewerAsync(Interviewer interviewer)
+        public Task RemoveInterviewerAsync(Interviewer interviewer)
         {
             if (interviewer == null)
             {
-                return;
+                return null;
             }
 
-            await _interviewersService.RemoveAsync(interviewer);
+            return _interviewersService.RemoveAsync(interviewer);
         }
 
         /// <summary>
@@ -159,14 +158,14 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Changes the password for an interviewer asynchronously
         /// </summary>
-        public async Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        public Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
         {
             if (interviewer == null)
             {
                 return null;
             }
 
-            return await _interviewersService.ChangePasswordAsync(interviewer, password);
+            return _interviewersService.ChangePasswordAsync(interviewer, password);
         }
 
         /// <summary>

@@ -203,7 +203,7 @@ namespace Nfield.Services
         #region QueryAsync
 
         [Fact]
-        public async Task TestQueryAsync_ServerReturnsQuery_ReturnsListWithInterviewers()
+        public void TestQueryAsync_ServerReturnsQuery_ReturnsListWithInterviewers()
         {
             var expectedInterviewers = new Interviewer[]
             { new Interviewer{InterviewerId = "TestInterviewer"},
@@ -224,7 +224,7 @@ namespace Nfield.Services
             var target = new NfieldInterviewersService();
             target.InitializeNfieldConnection(mockedNfieldConnection.Object);
 
-            var actualInterviewers = await target.QueryAsync();
+            var actualInterviewers = target.QueryAsync().Result;
             Assert.Equal(expectedInterviewers[0].InterviewerId, actualInterviewers.ToArray()[0].InterviewerId);
             Assert.Equal(expectedInterviewers[1].InterviewerId, actualInterviewers.ToArray()[1].InterviewerId);
             Assert.Equal(2, actualInterviewers.Count());

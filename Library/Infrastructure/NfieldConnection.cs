@@ -17,8 +17,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Linq;
-using System.Net.Http.Headers;
 
 namespace Nfield.Infrastructure
 {
@@ -61,7 +59,7 @@ namespace Nfield.Infrastructure
         /// Sign into the specified domain, using the specified username and password
         /// </summary>
         /// <returns><c>true</c> if sign-in was successful, <c>false</c> otherwise.</returns>
-        public async Task<bool> SignInAsync(string domainName, string username, string password)
+        public Task<bool> SignInAsync(string domainName, string username, string password)
         {
             if (Client == null)
             {
@@ -75,9 +73,9 @@ namespace Nfield.Infrastructure
                 };
             var content = new FormUrlEncodedContent(data);
 
-            var result = await Client.PostAsync(NfieldServerUri + @"/SignIn", content);
-
-            return result.StatusCode == HttpStatusCode.OK;
+            return
+                Client.PostAsync(NfieldServerUri + @"/SignIn", content)
+                      .ContinueWith(responseMessageTask => responseMessageTask.Result.StatusCode == HttpStatusCode.OK);
         }
 
         /// <summary>
