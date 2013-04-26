@@ -71,9 +71,9 @@ namespace Nfield.Extensions
         /// <param name="interviewer">interviewer whose password has to be changed</param>
         /// <param name="password">the new password</param>
         /// <returns>interviewer whose password has been changed</returns>
-        public static Interviewer ChangePassword(this INfieldInterviewersService interviewerService, Interviewer interviewer, string password)
+        public static Interviewer ChangePassword(this INfieldInterviewersService interviewersService, Interviewer interviewer, string password)
         {
-            return interviewerService.ChangePasswordAsync(interviewer, password).Result;
+            return interviewersService.ChangePasswordAsync(interviewer, password).Result;
         }
     }
 }
