@@ -1,16 +1,16 @@
 ﻿//    This file is part of Nfield.SDK.
 //
 //    Nfield.SDK is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
+//    it under the terms of the GNU Lesser General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
 //    Nfield.SDK is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    GNU Lesser General Public License for more details.
 //
-//    You should have received a copy of the GNU General Public License
+//    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace Nfield.Infrastructure
         /// Sign into the specified domain, using the specified username and password
         /// </summary>
         /// <returns><c>true</c> if sign-in was successful, <c>false</c> otherwise.</returns>
-        public Task<bool> SignInAsync(string domainName, string username, string password)
+        public async Task<bool> SignInAsync(string domainName, string username, string password)
         {
             if (Client == null)
             {
@@ -75,9 +75,9 @@ namespace Nfield.Infrastructure
                 };
             var content = new FormUrlEncodedContent(data);
 
-            return
-                Client.PostAsync(NfieldServerUri + @"/SignIn", content)
-                      .ContinueWith(responseMessageTask => responseMessageTask.Result.StatusCode == HttpStatusCode.OK);
+            var result = await Client.PostAsync(NfieldServerUri + @"/SignIn", content);
+
+            return result.StatusCode == HttpStatusCode.OK;
         }
 
         /// <summary>

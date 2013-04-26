@@ -1,16 +1,16 @@
 ﻿//    This file is part of Nfield.SDK.
 //
 //    Nfield.SDK is free software: you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
+//    it under the terms of the GNU Lesser General Public License as published by
 //    the Free Software Foundation, either version 3 of the License, or
 //    (at your option) any later version.
 //
 //    Nfield.SDK is distributed in the hope that it will be useful,
 //    but WITHOUT ANY WARRANTY; without even the implied warranty of
 //    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
+//    GNU Lesser General Public License for more details.
 //
-//    You should have received a copy of the GNU General Public License
+//    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Linq;
@@ -71,9 +71,9 @@ namespace Nfield.Extensions
         /// <param name="interviewer">interviewer whose password has to be changed</param>
         /// <param name="password">the new password</param>
         /// <returns>interviewer whose password has been changed</returns>
-        public static Interviewer ChangePassword(this INfieldInterviewersService interviewersService, Interviewer interviewer, string password)
+        public static Interviewer ChangePassword(this INfieldInterviewersService interviewerService, Interviewer interviewer, string password)
         {
-            return interviewersService.ChangePasswordAsync(interviewer, password).Result;
+            return interviewerService.ChangePasswordAsync(interviewer, password).Result;
         }
     }
 }
