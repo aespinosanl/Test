@@ -36,13 +36,12 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
         /// </summary>
-        public Task<Interviewer> AddAsync(Interviewer interviewer)
+                public Task<Interviewer> AddAsync(Interviewer interviewer)
         {
             if(interviewer == null)
             {
                 throw new ArgumentNullException("interviewer");
             }
-
 
             return Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer)
                          .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
@@ -64,7 +63,6 @@ namespace Nfield.Services.Implementation
                 Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId)
                       .ContinueWith(responseTask => ValidateStatusCode(responseTask.Result));
             //var result = await Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId);
-
             //ValidateStatusCode(result);
         }
 
@@ -86,7 +84,6 @@ namespace Nfield.Services.Implementation
             };
 
             var result = await Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer);
-
             ValidateStatusCode(result);
 
             return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
@@ -104,6 +101,22 @@ namespace Nfield.Services.Implementation
             return JsonConvert.DeserializeObject<List<Interviewer>>(content).AsQueryable();
         }
 
+        /// <summary>
+        /// See <see cref="INfieldInterviewersService.ChangePasswordAsync"/>
+        /// </summary>
+        public async Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        {
+            if (interviewer == null)
+            {
+                throw new ArgumentNullException("interviewer");
+            }
+
+            var result = await Client.PutAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, password);
+            ValidateStatusCode(result);
+
+            return await JsonConvert.DeserializeObjectAsync<Interviewer>(await result.Content.ReadAsStringAsync());
+        }
+
         #endregion
 
         #region implementation of INfieldConnectionClientObject
@@ -119,7 +132,7 @@ namespace Nfield.Services.Implementation
 
         #endregion
 
-        IHttpClient Client { get; set; }
+        INfieldHttpClient Client { get; set; }
 
         Uri InterviewersApi { get; set; }
 

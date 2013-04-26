@@ -65,7 +65,7 @@ namespace Nfield.Infrastructure
         {
             if (Client == null)
             {
-                Client = (IHttpClient)DependencyResolver.Current.Resolve(typeof(IHttpClient));
+                Client = (INfieldHttpClient)DependencyResolver.Current.Resolve(typeof(INfieldHttpClient));
             }
             var data = new Dictionary<string, string>
                 {
@@ -122,7 +122,7 @@ namespace Nfield.Infrastructure
 
         #region Implementation of INfieldConnectionClient
 
-        public IHttpClient Client { get; private set; }
+        public INfieldHttpClient Client { get; private set; }
 
         #endregion
     }

@@ -79,27 +79,26 @@ namespace Nfield.SDK.Samples
         /// <summary>
         /// Updates an <see cref="Interviewer"/> through an asynchronous operation.
         /// </summary>
-        public async Task UpdateInterviewerAsync(Interviewer interviewer)
+        public async Task<Interviewer> UpdateInterviewerAsync(Interviewer interviewer)
         {
             if(interviewer == null)
             {
-                return;
+                return null;
             }
-            await _interviewersService.UpdateAsync(interviewer);
+            return await _interviewersService.UpdateAsync(interviewer);
         }
 
         /// <summary>
         /// Updates an <see cref="Interviewer"/> through a synchronous operation.
         /// </summary>
-        public void UpdateInterviewer(Interviewer interviewer)
+        public Interviewer UpdateInterviewer(Interviewer interviewer)
         {
             if (interviewer == null)
             {
-                return;
+                return null;
             }
 
-
-            _interviewersService.Update(interviewer);
+            return _interviewersService.Update(interviewer);
         }
 
         /// <summary>
@@ -157,5 +156,30 @@ namespace Nfield.SDK.Samples
                 allInterviewers.Where(interviewer => !string.IsNullOrEmpty(interviewer.TelephoneNumber)).ToList();
         }
 
+        /// <summary>
+        /// Changes the password for an interviewer asynchronously
+        /// </summary>
+        public async Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        {
+            if (interviewer == null)
+            {
+                return null;
+            }
+
+            return await _interviewersService.ChangePasswordAsync(interviewer, password);
+        }
+
+        /// <summary>
+        /// Changes the password for an interviewer
+        /// </summary>
+        public Interviewer ChangePassword(Interviewer interviewer, string password)
+        {
+            if (interviewer == null)
+            {
+                return null;
+            }
+
+            return _interviewersService.ChangePassword(interviewer, password);
+        }
     }
 }
