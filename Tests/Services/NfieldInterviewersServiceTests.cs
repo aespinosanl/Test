@@ -327,7 +327,12 @@ namespace Nfield.Services
             }
             catch (AggregateException ex)
             {
-                throw ex.InnerException;
+                var innerException = ex.InnerException;
+                while (innerException is AggregateException)
+                {
+                    innerException = innerException.InnerException;
+                }
+                throw innerException;
             }
         }
                 
