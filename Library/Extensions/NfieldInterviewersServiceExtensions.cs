@@ -49,18 +49,31 @@ namespace Nfield.Extensions
         /// </summary>
         /// <param name="interviewersService">The <see cref="INfieldInterviewersService"/> to use</param>
         /// <param name="interviewer">interviewer to update</param>
-        public static void Update(this INfieldInterviewersService interviewersService, Interviewer interviewer)
+        public static Interviewer Update(this INfieldInterviewersService interviewersService, Interviewer interviewer)
         {
-            interviewersService.UpdateAsync(interviewer).Wait();
+            return interviewersService.UpdateAsync(interviewer).Result;
         }
 
         /// <summary>
         /// a synchronous version of <see cref="INfieldInterviewersService.QueryAsync"/>
         /// </summary>
+        /// <param name="interviewersService">The <see cref="INfieldInterviewersService"/> to use</param>
         /// <returns>interviewers as queryable</returns>
         public static IQueryable<Interviewer> Query(this INfieldInterviewersService interviewersService)
         {
             return interviewersService.QueryAsync().Result;
+        }
+
+        /// <summary>
+        /// a synchronous version of <see cref="INfieldInterviewersService.ChangePasswordAsync"/>
+        /// </summary>
+        /// <param name="interviewersService">The <see cref="INfieldInterviewersService"/> to use</param>
+        /// <param name="interviewer">interviewer whose password has to be changed</param>
+        /// <param name="password">the new password</param>
+        /// <returns>interviewer whose password has been changed</returns>
+        public static Interviewer ChangePassword(this INfieldInterviewersService interviewerService, Interviewer interviewer, string password)
+        {
+            return interviewerService.ChangePasswordAsync(interviewer, password).Result;
         }
     }
 }

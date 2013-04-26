@@ -26,7 +26,7 @@ namespace Nfield.Infrastructure
 {
 
     [ExcludeFromCodeCoverage]
-    internal sealed class NfieldHttpClient : IHttpClient
+    internal sealed class NfieldHttpClient : INfieldHttpClient
     {
         private readonly HttpClient _httpClient;
 
@@ -39,39 +39,39 @@ namespace Nfield.Infrastructure
 
         public Task<HttpResponseMessage> SendAsync(HttpRequestMessage request)
         {
-            return SendRequest(_httpClient.SendAsync(request));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.SendAsync(request));
         }
 
         public Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content)
         {
-            return SendRequest(_httpClient.PostAsync(requestUri, content));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.PostAsync(requestUri, content));
         }
 
         public Task<HttpResponseMessage> GetAsync(string requestUri)
         {
-            return SendRequest(_httpClient.GetAsync(requestUri));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.GetAsync(requestUri));
         }
 
         public Task<HttpResponseMessage> PostAsJsonAsync<TContent>(string requestUri, TContent content)
         {
-            return SendRequest(_httpClient.PostAsJsonAsync(requestUri, content));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.PostAsJsonAsync(requestUri, content));
         }
 
         public Task<HttpResponseMessage> PutAsJsonAsync<TContent>(string requestUri, TContent content)
         {
-            return SendRequest(_httpClient.PutAsJsonAsync<TContent>(requestUri, content));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.PutAsJsonAsync<TContent>(requestUri, content));
         }
 
         public Task<HttpResponseMessage> DeleteAsync(string requestUri)
         {
-            return SendRequest(_httpClient.DeleteAsync(requestUri));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.DeleteAsync(requestUri));
         }
 
         public Task<HttpResponseMessage> PatchAsJsonAsync<TContent>(string requestUri, TContent content)
         {
             var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri);
             request.Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json");
-            return SendRequest(_httpClient.SendAsync(request));
+            return SendRequestAndHandleAuthenticationToken(_httpClient.SendAsync(request));
         }
 
         #endregion
@@ -85,22 +85,15 @@ namespace Nfield.Infrastructure
 
         #endregion
 
-        private Task<HttpResponseMessage> SendRequest(Task<HttpResponseMessage> sendTask)
+        private async Task<HttpResponseMessage> SendRequestAndHandleAuthenticationToken(Task<HttpResponseMessage> sendTask)
         {
-            return sendTask.ContinueWith<HttpResponseMessage>
-                (response =>
-                    {
-                        var result = response.Result;
-                        IEnumerable<string> headerValues;
-                        if (result.Headers.TryGetValues("X-AuthenticationToken", out headerValues))
-                        {
-                            var token = headerValues.First();
-                            _httpClient.DefaultRequestHeaders.Remove("Authorization");
-                            _httpClient.DefaultRequestHeaders.Add("Authorization", new AuthenticationHeaderValue("Basic", token).ToString());
-                        }
-                        return result;
-                    }
-                );
+            var response = await sendTask;
+            IEnumerable<string> headerValues;
+            if (response.Headers.TryGetValues("X-AuthenticationToken", out headerValues))
+            {
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", headerValues.First());
+            }
+            return response;
         }
 
     }

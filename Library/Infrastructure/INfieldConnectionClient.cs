@@ -19,7 +19,7 @@ namespace Nfield.Infrastructure
 {
     internal interface INfieldConnectionClient
     {
-        IHttpClient Client { get; }
+        INfieldHttpClient Client { get; }
 
         Uri NfieldServerUri { get; }
     }

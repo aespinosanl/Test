@@ -55,11 +55,17 @@ namespace Nfield.SDK.Samples
 
                 Task.WaitAll(t1, t2);
 
+                interviewer2 = t2.Result;
                 var interviewer1 = t1.Result;
                 interviewer1.EmailAddress = interviewer1.EmailAddress + "changed";
                 interviewer1.FirstName = "Bob";
 
-                interviewersManager.UpdateInterviewer(interviewer1);
+                interviewer1 = interviewersManager.UpdateInterviewer(interviewer1);
+
+                var t3 = interviewersManager.ChangePasswordAsync(interviewer2, "ab12345");
+                interviewersManager.ChangePassword(interviewer1, "12345ab");
+
+                t3.Wait();
 
                 interviewersManager.QueryForInterviewers();
                 interviewersManager.QueryForInterviewersAsync();

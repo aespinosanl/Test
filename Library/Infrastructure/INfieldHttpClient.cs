@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Nfield.Infrastructure
 {
-    internal interface IHttpClient : IDisposable
+    internal interface INfieldHttpClient : IDisposable
     {
         Task<HttpResponseMessage> SendAsync(HttpRequestMessage request);
         Task<HttpResponseMessage> PostAsync(string requestUri, HttpContent content);
