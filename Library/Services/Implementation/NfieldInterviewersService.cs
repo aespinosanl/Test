@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Nfield.Exceptions;
+using Nfield.Extensions;
 using Nfield.Infrastructure;
 using Nfield.Models;
 
@@ -36,7 +37,7 @@ namespace Nfield.Services.Implementation
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
         /// </summary>
-                public Task<Interviewer> AddAsync(Interviewer interviewer)
+        public Task<Interviewer> AddAsync(Interviewer interviewer)
         {
             if(interviewer == null)
             {
@@ -46,7 +47,8 @@ namespace Nfield.Services.Implementation
             return Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer)
                          .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
                          .ContinueWith(task => task.Result.Content.ReadAsStringAsync().Result)
-                         .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result);
+                         .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result)
+                         .FlattenExceptions();
         }
 
         /// <summary>

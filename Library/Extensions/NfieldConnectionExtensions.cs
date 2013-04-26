@@ -33,13 +33,7 @@ namespace Nfield.Extensions
         /// <returns><c>true</c> if sign in was successful, <c>false</c> otherwise.</returns>
         public static bool SignIn(this INfieldConnection nfieldConnection, string domainName, string username, string password)
         {
-            var result = false;
-
-            nfieldConnection.SignInAsync(domainName, username, password)
-                            .ContinueWith(task => result = task.Result)
-                            .Wait();
-
-            return result;
+            return nfieldConnection.SignInAsync(domainName, username, password).Result;
         }
 
     }
