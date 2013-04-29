@@ -45,10 +45,9 @@ namespace Nfield.Services.Implementation
             }
 
             return Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer)
-                         .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
-                         .ContinueWith(task => task.Result.Content.ReadAsStringAsync().Result)
-                         .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result)
-                         .FlattenExceptions();
+                            .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
+                            .ContinueWith(task => task.Result.Content.ReadAsStringAsync().Result)
+                            .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result);
         }
 
         /// <summary>

@@ -16,12 +16,8 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using Moq;
-using Newtonsoft.Json;
-using Nfield.Services;
 using Xunit;
 
 namespace Nfield.Infrastructure
