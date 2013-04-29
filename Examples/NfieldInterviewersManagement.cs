@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,14 +24,15 @@ using System.Linq;
 namespace Nfield.SDK.Samples
 {
     /// <summary>
-    /// Helper class handling <see cref="Interviewer"/>s management
+    /// Helper class handling <see cref="Interviewer"/>s management.
+    /// This demonstrates various operations that are available on <see cref="INfieldInterviewersService"/>.
     /// </summary>
     public class NfieldInterviewersManagement
     {
         private readonly INfieldInterviewersService _interviewersService;
 
         /// <summary>
-        /// Ctor.
+        /// Constructor.
         /// </summary>
         public NfieldInterviewersManagement(INfieldInterviewersService interviewersService)
         {
@@ -38,7 +40,26 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Adds and <see cref="Interviewer"/> to the system through an asynchronous operation.
+        /// Adds an <see cref="Interviewer"/> to the system with a synchronous operation.
+        /// </summary>
+        public Interviewer AddInterviewer()
+        {
+            Interviewer interviewer = new Interviewer
+                {
+                    ClientInterviewerId = "pomn45dr",
+                    FirstName = "Steve",
+                    LastName = "Balmer",
+                    EmailAddress = "steve@hotmail.com",
+                    TelephoneNumber = "0207821569",
+                    UserName = "steve",
+                    Password = "password12"
+                };
+
+            return _interviewersService.Add(interviewer);
+        }
+
+        /// <summary>
+        /// Adds an <see cref="Interviewer"/> to the system with an asynchronous operation.
         /// </summary>
         public Task<Interviewer> AddInterviewerAsync()
         {
@@ -57,38 +78,7 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Adds and <see cref="Interviewer"/> to the system through a synchronous operation.
-        /// </summary>
-        public Interviewer AddInterviewer()
-        {
-            Interviewer interviewer = new Interviewer
-            {
-                ClientInterviewerId = "pomn45dr",
-                FirstName = "Steve",
-                LastName = "Balmer",
-                EmailAddress = "steve@hotmail.com",
-                TelephoneNumber = "0207821569",
-                UserName = "steve",
-                Password = "password12"
-            };
-
-            return _interviewersService.Add(interviewer);
-        }
-
-        /// <summary>
-        /// Updates an <see cref="Interviewer"/> through an asynchronous operation.
-        /// </summary>
-        public Task<Interviewer> UpdateInterviewerAsync(Interviewer interviewer)
-        {
-            if(interviewer == null)
-            {
-                return null;
-            }
-            return _interviewersService.UpdateAsync(interviewer);
-        }
-
-        /// <summary>
-        /// Updates an <see cref="Interviewer"/> through a synchronous operation.
+        /// Updates an <see cref="Interviewer"/> with a synchronous operation.
         /// </summary>
         public Interviewer UpdateInterviewer(Interviewer interviewer)
         {
@@ -101,20 +91,20 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Removes an existing <see cref="Interviewer"/> through an asynchronous operation.
+        /// Updates an <see cref="Interviewer"/> with an asynchronous operation.
         /// </summary>
-        public Task RemoveInterviewerAsync(Interviewer interviewer)
+        public Task<Interviewer> UpdateInterviewerAsync(Interviewer interviewer)
         {
-            if (interviewer == null)
+            if(interviewer == null)
             {
                 return null;
             }
 
-            return _interviewersService.RemoveAsync(interviewer);
+            return _interviewersService.UpdateAsync(interviewer);
         }
 
         /// <summary>
-        /// Removes an existing <see cref="Interviewer"/> through a synchronous operation.
+        /// Removes an existing <see cref="Interviewer"/> with a synchronous operation.
         /// </summary>
         public void RemoveInterviewer(Interviewer interviewer)
         {
@@ -127,7 +117,21 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Performs query operation for available Interviewers. 
+        /// Removes an existing <see cref="Interviewer"/> with an asynchronous operation.
+        /// </summary>
+        public Task RemoveInterviewerAsync(Interviewer interviewer)
+        {
+            if (interviewer == null)
+            {
+                return null;
+            }
+
+            return _interviewersService.RemoveAsync(interviewer);
+        }
+
+        /// <summary>
+        /// Performs query operation for available <see cref="Interviewer"/>s synchronously. 
+        /// Note that this sample does not return the result, although your real class will do so.
         /// </summary>
         public void QueryForInterviewers()
         {
@@ -138,7 +142,8 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Performs query operation for available Interviewers asynchronously. 
+        /// Performs query operation for available <see cref="Interviewer"/>s asynchronously. 
+        /// Note that this sample does not return the result, although your real class will do so.
         /// </summary>
         public void QueryForInterviewersAsync()
         {
@@ -156,20 +161,7 @@ namespace Nfield.SDK.Samples
         }
 
         /// <summary>
-        /// Changes the password for an interviewer asynchronously
-        /// </summary>
-        public Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
-        {
-            if (interviewer == null)
-            {
-                return null;
-            }
-
-            return _interviewersService.ChangePasswordAsync(interviewer, password);
-        }
-
-        /// <summary>
-        /// Changes the password for an interviewer
+        /// Changes the password for an <see cref="Interviewer"/> synchronously.
         /// </summary>
         public Interviewer ChangePassword(Interviewer interviewer, string password)
         {
@@ -179,6 +171,19 @@ namespace Nfield.SDK.Samples
             }
 
             return _interviewersService.ChangePassword(interviewer, password);
+        }
+
+        /// <summary>
+        /// Changes the password for an <see cref="Interviewer"/> asynchronously.
+        /// </summary>
+        public Task<Interviewer> ChangePasswordAsync(Interviewer interviewer, string password)
+        {
+            if (interviewer == null)
+            {
+                return null;
+            }
+
+            return _interviewersService.ChangePasswordAsync(interviewer, password);
         }
     }
 }

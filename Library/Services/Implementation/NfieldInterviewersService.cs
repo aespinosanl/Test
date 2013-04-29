@@ -32,7 +32,7 @@ namespace Nfield.Services.Implementation
     internal class NfieldInterviewersService : INfieldInterviewersService, INfieldConnectionClientObject
     {
 
-        #region implementation of INfieldInterviewersService
+        #region Implementation of INfieldInterviewersService
 
         /// <summary>
         /// See <see cref="INfieldInterviewersService.AddAsync"/>
@@ -122,22 +122,26 @@ namespace Nfield.Services.Implementation
 
         #endregion
 
-        #region implementation of INfieldConnectionClientObject
+        #region Implementation of INfieldConnectionClientObject
 
         public INfieldConnectionClient ConnectionClient { get; internal set; }
 
         public void InitializeNfieldConnection(INfieldConnectionClient connection)
         {
             ConnectionClient = connection;
-            Client = ConnectionClient.Client;
-            InterviewersApi = new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/interviewers"); 
         }
 
         #endregion
 
-        INfieldHttpClient Client { get; set; }
+        private INfieldHttpClient Client
+        {
+            get { return ConnectionClient.Client; }
+        }
 
-        Uri InterviewersApi { get; set; }
+        private Uri InterviewersApi
+        {
+            get { return new Uri(ConnectionClient.NfieldServerUri.AbsoluteUri + @"/interviewers"); }
+        }
 
         /// <summary>
         /// Helper method that checks the <paramref name="result"/> and throws the appropriate exceptions 
@@ -159,7 +163,7 @@ namespace Nfield.Services.Implementation
                         throw new NfieldNotFoundException(result.ReasonPhrase);
                 }
 
-                int code = (int)result.StatusCode;
+                var code = (int)result.StatusCode;
                 if (code >= 500 && code < 600)
                     throw new NfieldServerErrorException(result.ReasonPhrase);
 

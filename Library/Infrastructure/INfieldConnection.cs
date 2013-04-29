@@ -33,7 +33,10 @@ namespace Nfield.Infrastructure
         /// <summary>
         /// Sign into the specified domain, using the specified username and password
         /// </summary>
-        /// <returns><c>true</c> if sign-in was successful, <c>false</c> otherwise.</returns>
+        /// <param name="domainName">The name of the domain to sign in to</param>
+        /// <param name="username">The username to sign in</param>
+        /// <param name="password">The password to use for authentication</param>
+        /// <returns><c>true</c> if sign in was successful, <c>false</c> otherwise.</returns>
         Task<bool> SignInAsync(string domainName, string username, string password);
 
         /// <summary>

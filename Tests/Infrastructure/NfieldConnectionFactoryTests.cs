@@ -12,15 +12,17 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
-using System;
 
+using System;
 using Xunit;
 
 namespace Nfield.Infrastructure
 {
+    /// <summary>
+    /// Tests for <see cref="NfieldConnectionFactory"/>
+    /// </summary>
     public class NfieldConnectionFactoryTests
     {
-
         [Fact]
         public void CreateCreatesAnNfieldConnection()
         {

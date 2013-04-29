@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -22,6 +23,9 @@ using Xunit;
 
 namespace Nfield.Infrastructure
 {
+    /// <summary>
+    /// Tests for <see cref="NfieldConnection"/>
+    /// </summary>
     public class NfieldConnectionTests
     {
         #region SignInAsync Tests
@@ -81,6 +85,7 @@ namespace Nfield.Infrastructure
         }
 
         #endregion
+
         #region GetService Tests
 
         [Fact]

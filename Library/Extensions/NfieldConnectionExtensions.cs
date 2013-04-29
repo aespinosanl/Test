@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 
 using Nfield.Infrastructure;
@@ -19,18 +20,13 @@ using Nfield.Infrastructure;
 namespace Nfield.Extensions
 {
     /// <summary>
-    /// Extensions to NfieldConnection class to make the asynchronous methods synchronous
+    /// Extensions to <see cref="NfieldConnection"/> class to make the asynchronous methods synchronous
     /// </summary>
     public static class NfieldConnectionExtensions
     {
         /// <summary>
         /// A synchronous version of <see cref="INfieldConnection.SignInAsync"/>.
         /// </summary>
-        /// <param name="nfieldConnection">The <see cref="INfieldConnection"/> to sign in</param>
-        /// <param name="domainName">The name of the domain to sign in to</param>
-        /// <param name="username">The username to sign in</param>
-        /// <param name="password">The password to use for authentication</param>
-        /// <returns><c>true</c> if sign in was successful, <c>false</c> otherwise.</returns>
         public static bool SignIn(this INfieldConnection nfieldConnection, string domainName, string username, string password)
         {
             return nfieldConnection.SignInAsync(domainName, username, password).Result;

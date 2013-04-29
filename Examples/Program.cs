@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Threading.Tasks;
 using Nfield.Infrastructure;
@@ -45,9 +46,10 @@ namespace Nfield.SDK.Samples
                 // Request the Interviewers service to manage interviewers.
                 INfieldInterviewersService interviewersService = connection.GetService<INfieldInterviewersService>();
 
+                // Create a new manager to perform the operations on the service.
                 NfieldInterviewersManagement interviewersManager = new NfieldInterviewersManagement(interviewersService);
 
-                // Perform synchronous and asynchronous operations on Interviewers.
+                // This sample shows various ways of performing synchronous and asynchronous operations on Interviewers.
                 var t1 = interviewersManager.AddInterviewerAsync();
                 var interviewer2 = interviewersManager.AddInterviewer();
                 interviewer2.FirstName = "Harry";

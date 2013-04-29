@@ -69,7 +69,7 @@ namespace Nfield.Services
         /// <summary>
         /// Change the password of an interviewer
         /// </summary>
-        /// <param name="interviewer">interviewer whose password has to be changed</param>
+        /// <param name="interviewer">interviewer whose password to change</param>
         /// <param name="password">the new password</param>
         /// <exception cref="T:System.AggregateException"></exception>
         /// The aggregate exception can contain:
