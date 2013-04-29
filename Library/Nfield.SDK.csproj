@@ -74,7 +74,6 @@
     <Compile Include="Exceptions\NfieldBaseException.cs" />
     <Compile Include="Extensions\NfieldConnectionExtensions.cs" />
     <Compile Include="Extensions\NfieldInterviewersServiceExtensions.cs" />
-    <Compile Include="Extensions\TplExtensions.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Infrastructure\DependencyResolverExtensions.cs" />
     <Compile Include="Infrastructure\NfieldHttpClient.cs" />

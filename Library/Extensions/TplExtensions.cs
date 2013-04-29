@@ -12,6 +12,8 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Threading.Tasks;
 
 namespace Nfield.Extensions
@@ -23,19 +25,32 @@ namespace Nfield.Extensions
         /// </summary>
         public static Task<T> FlattenExceptions<T>(this Task<T> task)
         {
-            return task.ContinueWith(errorTask =>
+            return task.ContinueWith(previousTask =>
                 {
                     var tcs = new TaskCompletionSource<T>();
 
-                    if (errorTask.Exception != null) // Exceptions occured
+                    switch (previousTask.Status)
                     {
-                        tcs.SetException(errorTask.Exception.Flatten().InnerExceptions);
+                        case TaskStatus.Faulted:
+                            // Exceptions occured in (one of the) previous tasks
+                            tcs.SetException(previousTask.Exception.Flatten().InnerExceptions);
+                            break;
+
+                        case TaskStatus.Canceled:
+                            tcs.SetCanceled();
+                            break;
+
+                        case TaskStatus.RanToCompletion:
+                            tcs.SetResult(previousTask.Result);
+                            break;
+
+                        default:
+                            throw new InvalidOperationException(
+                                string.Format("Impossible task status: {0}", previousTask.Status));
                     }
 
                     return tcs.Task;
-                    //According to this link http://msdn.microsoft.com/en-us/library/vstudio/system.threading.tasks.taskcontinuationoptions(v=vs.100).aspx
-                    //this option doesn't work for multi task continuations.
-                }, TaskContinuationOptions.OnlyOnFaulted).Unwrap();
+                }).Unwrap();
         }
     }
 }
