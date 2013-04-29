@@ -47,7 +47,8 @@ namespace Nfield.Services.Implementation
             return Client.PostAsJsonAsync(InterviewersApi.AbsoluteUri, interviewer)
                             .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
                             .ContinueWith(task => task.Result.Content.ReadAsStringAsync().Result)
-                            .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result).FlattenExceptions();
+                            .ContinueWith(task => JsonConvert.DeserializeObjectAsync<Interviewer>(task.Result).Result)
+                            .FlattenExceptions();
         }
 
         /// <summary>
@@ -62,7 +63,8 @@ namespace Nfield.Services.Implementation
 
             return
                 Client.DeleteAsync(InterviewersApi + @"/" + interviewer.InterviewerId)
-                      .ContinueWith(responseTask => ValidateStatusCodeAsync(responseTask.Result));
+                      .ContinueWith(responseTask => ValidateStatusCodeAsync(responseTask.Result))
+                      .FlattenExceptions();
         }
 
         /// <summary>
@@ -85,7 +87,8 @@ namespace Nfield.Services.Implementation
             return Client.PatchAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, updatedInterviewer)
                          .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
                          .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
-                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result);
+                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result)
+                         .FlattenExceptions();
         }
 
         /// <summary>
@@ -96,7 +99,8 @@ namespace Nfield.Services.Implementation
             return Client.GetAsync(InterviewersApi.AbsoluteUri)
                         .ContinueWith(responoseMessageTask => ValidateStatusCodeAsync(responoseMessageTask.Result).Result)
                         .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
-                        .ContinueWith(stringTask => JsonConvert.DeserializeObject<List<Interviewer>>(stringTask.Result).AsQueryable());   
+                        .ContinueWith(stringTask => JsonConvert.DeserializeObject<List<Interviewer>>(stringTask.Result).AsQueryable())
+                        .FlattenExceptions();   
         }
 
         /// <summary>
@@ -112,7 +116,8 @@ namespace Nfield.Services.Implementation
             return Client.PutAsJsonAsync(InterviewersApi + @"/" + interviewer.InterviewerId, password)
                          .ContinueWith(responseMessageTask => ValidateStatusCodeAsync(responseMessageTask.Result).Result)
                          .ContinueWith(responseMessageTask => responseMessageTask.Result.Content.ReadAsStringAsync().Result)
-                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result);
+                         .ContinueWith(stringTask => JsonConvert.DeserializeObjectAsync<Interviewer>(stringTask.Result).Result)
+                         .FlattenExceptions();
         }
 
         #endregion

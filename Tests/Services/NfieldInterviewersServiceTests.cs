@@ -37,7 +37,9 @@ namespace Nfield.Services
         public void TestAddAsync_InterviewerIsNull_ThrowsArgumentNullException()
         {
             var target = new NfieldInterviewersService();
-            Assert.Throws(typeof(ArgumentNullException), () => UnwrapAggregateException(target.AddAsync(null)));
+
+            // Note: exception thrown is not run inside a task, that's why it is not wrapped inside an AggregateException
+            Assert.Throws(typeof(ArgumentNullException), () => target.AddAsync(null).Wait());
         }
 
         [Fact]
@@ -324,12 +326,7 @@ namespace Nfield.Services
             }
             catch (AggregateException ex)
             {
-                var innerException = ex.InnerException;
-                while (innerException is AggregateException)
-                {
-                    innerException = innerException.InnerException;
-                }
-                throw innerException;
+                throw ex.InnerException;
             }
         }
                 
