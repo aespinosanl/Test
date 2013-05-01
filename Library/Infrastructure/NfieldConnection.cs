@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -38,7 +39,6 @@ namespace Nfield.Infrastructure
                 throw new ArgumentNullException("serviceType");
             }
 
-
             var serviceInstance = DependencyResolver.Current.Resolve(serviceType);
 
             var nfieldConnectionClientObject = serviceInstance as INfieldConnectionClientObject;
@@ -46,6 +46,7 @@ namespace Nfield.Infrastructure
             {
                 nfieldConnectionClientObject.InitializeNfieldConnection(this);
             }
+
             return serviceInstance;
         }
 

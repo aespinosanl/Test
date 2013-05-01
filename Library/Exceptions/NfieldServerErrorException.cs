@@ -12,13 +12,14 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Runtime.Serialization;
 
 namespace Nfield.Exceptions
 {
     /// <summary>
-    /// Base class from which will inherit all exceptions.
+    /// Exception indicating an error on the server.
     /// </summary>
     [Serializable]
     public class NfieldServerErrorException : NfieldBaseException

@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Threading.Tasks;
 
@@ -19,14 +20,13 @@ namespace Nfield.Infrastructure
 {
 
     /// <summary>
-    /// Represents a connection to an Nfield server. use the <see cref="INfieldConnection"/> to gain access to the 
+    /// Represents a connection to an Nfield server. Use the <see cref="INfieldConnection"/> to gain access to the 
     /// various services that Nfield provides.
-    /// Before you can access the 
     /// </summary>
     public interface INfieldConnection : IServiceProvider, IDisposable
     {
         /// <summary>
-        /// the server Uri for Nfield.
+        /// The server Uri for Nfield.
         /// </summary>
         Uri NfieldServerUri { get; }
 
@@ -42,7 +42,6 @@ namespace Nfield.Infrastructure
         /// <summary>
         /// Return the specified service <typeparamref name="TService"/> provided by Nfield.
         /// </summary>
-        /// <typeparam name="TService"></typeparam>
         /// <returns>An implementation of the specified service.</returns>
         TService GetService<TService>();
 

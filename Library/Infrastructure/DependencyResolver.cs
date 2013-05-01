@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ using System.Linq;
 namespace Nfield.Infrastructure
 {
     /// <summary>
-    /// Exposes the implementation of the IoC container through the <see cref="Current"/> property. To register your own
-    /// implementation use one of the 'Register' overloads to register your favorite IoC container.
+    /// Exposes the implementation of the IoC container through the <see cref="Current"/> property.
+    /// To register your own implementation use one of the 'Register' overloads to register your favorite IoC container.
     /// </summary>
     public class DependencyResolver
     {
