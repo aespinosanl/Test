@@ -12,9 +12,9 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -24,8 +24,10 @@ using System.Text;
 
 namespace Nfield.Infrastructure
 {
-
-    [ExcludeFromCodeCoverage]
+    /// <summary>
+    /// A wrapper around <see cref="HttpClient"/> that also adds an authentication header to the response
+    /// if it was received in the request.
+    /// </summary>
     internal sealed class NfieldHttpClient : INfieldHttpClient
     {
         private readonly HttpClient _httpClient;
@@ -92,8 +94,8 @@ namespace Nfield.Infrastructure
                 IEnumerable<string> headerValues;
                 if(responseTask.Result.Headers.TryGetValues("X-AuthenticationToken", out headerValues))
                 {
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                                                                                                    headerValues.First());
+                    _httpClient.DefaultRequestHeaders.Authorization = 
+                        new AuthenticationHeaderValue("Basic", headerValues.First());
                 }
                 return responseTask.Result;
             });

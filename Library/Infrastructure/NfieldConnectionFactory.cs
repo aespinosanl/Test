@@ -12,8 +12,8 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
-using System.Net;
 
 namespace Nfield.Infrastructure
 {
@@ -26,8 +26,6 @@ namespace Nfield.Infrastructure
         /// <summary>
         /// Create a connection to the Nfield server on the specified <paramref name="nfieldServerUri"/>.
         /// </summary>
-        /// <param name="nfieldServerUri"></param>
-        /// <returns></returns>
         public static INfieldConnection Create(Uri nfieldServerUri)
         {
             var connection = DependencyResolver.Current.Resolve<NfieldConnection>();

@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using Nfield.Services;
 using Nfield.Services.Implementation;
@@ -19,13 +20,13 @@ using Nfield.Services.Implementation;
 namespace Nfield.Infrastructure
 {
     /// <summary>
-    /// Used to register the types into the user defined IoC container.
-    /// This method must be called to initialize the SDK.   
+    /// Used to register the types into the user-defined IoC container.
     /// </summary>
     public static class NfieldSdkInitializer
     {
         /// <summary>
         /// Method that registers all known types by calling the delegates provided.
+        /// This method must be called before using the SDK.
         /// </summary>
         /// <param name="registerTransient">Method that registers a Transient type.</param>
         /// <param name="registerSingleton">Method that registers a Singleton.</param>
@@ -34,7 +35,6 @@ namespace Nfield.Infrastructure
                                       Action<Type, Type> registerSingleton,
                                       Action<Type, Object> registerInstance)
         {
-            // TODO register all types.
             registerTransient(typeof(NfieldConnection), typeof(NfieldConnection));
             registerTransient(typeof(INfieldInterviewersService), typeof(NfieldInterviewersService));
             registerTransient(typeof(INfieldHttpClient), typeof(NfieldHttpClient));

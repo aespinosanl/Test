@@ -12,6 +12,7 @@
 //
 //    You should have received a copy of the GNU Lesser General Public License
 //    along with Nfield.SDK.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using Newtonsoft.Json;
 
@@ -59,7 +60,7 @@ namespace Nfield.Models
         public string TelephoneNumber { get; set; }
 
         /// <summary>
-        /// Password of interviewer
+        /// Password of interviewer, only used when creating an interview
         /// </summary>
         public string Password { get; set; }
 
@@ -76,7 +77,7 @@ namespace Nfield.Models
         public int UnsuccessfulCount { get; internal set; }
 
         /// <summary>
-        /// Total number of broken of interviews the interviewer has done
+        /// Total number interviews the interviewer has started and abandoned, eg timeout out
         /// </summary>
         [JsonProperty]
         public int DroppedOutCount { get; internal set; }
